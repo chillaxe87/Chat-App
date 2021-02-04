@@ -41,6 +41,7 @@ const autoScroll = () => {
 socket.on('message', (message) => {
     const html = Mustache.render(messageTemplate, {
         message: message.text,
+        username: message.username,
         createdAt: moment(message.createdAt).format(`H:mm:ss`)
     })
     $messages.insertAdjacentHTML('beforeend', html)
@@ -49,6 +50,7 @@ socket.on('message', (message) => {
 socket.on('locationMessage', (message) => {
     const html = Mustache.render(locationTemplate, {
         url: message.url,
+        username: message.username,
         createdAt: moment(message.createdAt).format(`H:mm:ss`)
     })
     $messages.insertAdjacentHTML('beforeend', html)

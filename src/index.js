@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
 
-        socket.emit('message', generateMessage('Welcome'))
+        socket.emit('message', generateMessage(`Welcome ${user.username}`))
         socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined!`))
         io.to(user.room).emit('roomData', {
             room: user.room,
@@ -41,12 +41,13 @@ io.on('connection', (socket) => {
         if(filter.isProfane(message)){
             return callback('Profanity is not allowed')
         }
-        io.to(user.room).emit('message', generateMessage(message))
+        io.to(user.room).emit('message', generateMessage(message, user.username))
         callback()
     })
 
     socket.on('sendLocation', (coordinates, callback) => {
-        io.emit('locationMessage', generateLocation(`https://google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`))
+        const user = getUser(socket.id)
+        io.emit('locationMessage', generateLocation(`https://google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`, user.username))
         callback()
     })
 
