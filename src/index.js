@@ -35,12 +35,12 @@ io.on('connection', (socket) => {
         callback()
     })
     socket.on('sendMessage', (message, callback) => {
-        const filter = new Filter()
+        // const filter = new Filter()
         const user = getUser(socket.id)
-
-        if(filter.isProfane(message)){
-            return callback('Profanity is not allowed')
-        }
+        
+        // if(filter.isProfane(message)){
+        //     return callback('Profanity is not allowed')
+        // }
         io.to(user.room).emit('message', generateMessage(message, user.username))
         callback()
     })
